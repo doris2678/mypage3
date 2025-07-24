@@ -232,8 +232,7 @@
 
         if (startTime <= 0) {
           clearInterval(myInterval);
-          shotBtn.disabled = true;
-          alert("時間到！");
+          shotBtn.disabled = true;          
           updateRanking(score);
           if (score > maxScore) {
             maxScore = score;
