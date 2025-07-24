@@ -58,7 +58,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h5>倒數計時</h5>
-        <div id="time" class="display-2 text-info score-time">60</div>
+        <div id="time" class="display-2 text-info score-time">10</div>
       </div>
       <div class="text-center flex-grow-1">
         <h2>🏀 投籃大賽 🏀</h2>
@@ -71,14 +71,14 @@
 
     <div class="row align-items-center mb-4">
       <div class="col-3 text-center">
-        <img src="./images/left.jpg" class="img-fluid rounded" alt="左側圖" />
+        <img id="img-left" src="./images/left.jpg" class="img-fluid rounded" alt="左側圖" />
       </div>
       <div class="col-6 text-center">
         <h5>目前分數</h5>
         <div id="score" class="display-3 text-success score-time">0</div>
       </div>
       <div class="col-3 text-center">
-        <img src="./images/right.jpg" class="img-fluid rounded" alt="右側圖" />
+        <img id="img-right" src="./images/right.jpg" class="img-fluid rounded" alt="右側圖" />
       </div>
     </div>
 
@@ -123,10 +123,13 @@
     const maxScoreSpan = document.getElementById("maxScore");
     const rankList = document.getElementById("rankList");
     const ball = document.getElementById("ball");
+    const imgleft=document.getElementById("img-left");
+    const imgright=document.getElementById("img-right");
+
 
     let score = 0;
-    let startTime = 60;
-    const bonusTime = 30;
+    let startTime = 10;
+    const bonusTime = 5;
     let maxScore = 0;
 
     let myInterval = null;
@@ -176,15 +179,18 @@
 
     // 投籃動畫
     function shootAnimation() {
-      const btnRect = shotBtn.getBoundingClientRect();
+      //const btnRect = shotBtn.getBoundingClientRect();
+      const btnRect = imgright.getBoundingClientRect();
 
       ball.style.left = btnRect.left + btnRect.width / 2 - 25 + "px";
       ball.style.top = btnRect.top + btnRect.height / 2 - 25 + "px";
       ball.style.display = "block";
       ball.style.transition = "transform 0.6s ease-in-out";
 
-      const targetX = window.innerWidth / 2 - 25;
-      const targetY = window.innerHeight / 3;
+      //const targetX = window.innerWidth / 2 - 25;
+      //const targetY = window.innerHeight / 3;
+       const targetX =window.innerWidth / 3 - 25;
+       const targetY =window.innerHeight / 3;
 
       const deltaX = targetX - (btnRect.left + btnRect.width / 2 - 25);
       const deltaY = targetY - (btnRect.top + btnRect.height / 2 - 25);
@@ -205,7 +211,7 @@
       shotBtn.disabled = false;
       score = 0;
       scoreSpan.innerHTML = score;
-      startTime = 60;
+      startTime = 10;
       timeSpan.innerHTML = startTime;
       timeSpan.className = "text-info display-2 score-time";
 
@@ -258,7 +264,7 @@
       updateRanking(score);
       score = 0;
       scoreSpan.innerHTML = score;
-      startTime = 60;
+      startTime = 10;
       timeSpan.innerHTML = startTime;
       timeSpan.className = "text-info display-2 score-time";
 
