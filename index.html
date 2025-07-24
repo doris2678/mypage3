@@ -58,7 +58,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h5>倒數計時</h5>
-        <div id="time" class="display-2 text-info score-time">10</div>
+        <div id="time" class="display-2 text-info score-time">60</div>
       </div>
       <div class="text-center flex-grow-1">
         <h2>🏀 投籃大賽 🏀</h2>
@@ -125,8 +125,8 @@
     const ball = document.getElementById("ball");
 
     let score = 0;
-    let startTime = 10;
-    const bonusTime = 5;
+    let startTime = 60;
+    const bonusTime = 30;
     let maxScore = 0;
 
     let myInterval = null;
@@ -205,7 +205,7 @@
       shotBtn.disabled = false;
       score = 0;
       scoreSpan.innerHTML = score;
-      startTime = 10;
+      startTime = 60;
       timeSpan.innerHTML = startTime;
       timeSpan.className = "text-info display-2 score-time";
 
@@ -258,7 +258,7 @@
       updateRanking(score);
       score = 0;
       scoreSpan.innerHTML = score;
-      startTime = 10;
+      startTime = 60;
       timeSpan.innerHTML = startTime;
       timeSpan.className = "text-info display-2 score-time";
 
