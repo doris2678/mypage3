@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>30
 <html lang="en">
 
 <head>
@@ -58,7 +58,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h5>倒數計時</h5>
-        <div id="time" class="display-2 text-info score-time">60</div>
+        <div id="time" class="display-2 text-info score-time">10</div>
       </div>
       <div class="text-center flex-grow-1">
         <h2>🏀 投籃大賽 🏀</h2>
@@ -107,28 +107,26 @@
     integrity="sha512-zKeerWHHuP3ar7kX2WKBSENzb+GJytFSBL6HrR2nPSR1kOX1qjm+oHooQtbDpDBSITgyl7QXZApvDfDWvKjkUw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
   <!-- 載入jquery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-  <script>
-    const startBtn = document.getElementById("startBtn");
-    const shotBtn = document.getElementById("shotBtn");
-    const stopBtn = document.getElementById("stopBtn");
-    const scoreSpan = document.getElementById("score");
-    const timeSpan = document.getElementById("time");
-    const maxScoreSpan = document.getElementById("maxScore");
-    const rankList = document.getElementById("rankList");
-    const ball = document.getElementById("ball");
-    const imgleft=document.getElementById("img-left");
-    const imgright=document.getElementById("img-right");
-
+  <script>    
+  $(document).ready(function(){ 
+    const startBtn = $("#startBtn");
+    const shotBtn = $("#shotBtn");
+    const stopBtn = $("#stopBtn");
+    const scoreSpan = $("#score");
+    const timeSpan = $("#time");
+    const maxScoreSpan = $("#maxScore");
+    const rankList = $("#rankList");
+    const ball = $("#ball");
+    const imgleft=$("#img-left");
+    const imgright=$("#img-right");
 
     let score = 0;
-    let startTime = 60;
+    let startTime = 10;
     const bonusTime = 30;
     let maxScore = 0;
 
@@ -137,26 +135,20 @@
     let getMaxScore = Number(localStorage.getItem("maxScore"));
     if (getMaxScore) maxScore = getMaxScore;
 
-    maxScoreSpan.innerHTML = maxScore;
-    timeSpan.innerHTML = startTime;
-    scoreSpan.innerHTML = score;
+    maxScoreSpan.html(maxScore);
+    timeSpan.html(startTime);
+    scoreSpan.html(score);
 
-    shotBtn.disabled = true;
+    shotBtn.prop("disabled", true);
 
     // 讀取排行榜
     function loadRanking() {
       let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-      // rankList.innerHTML = ranking
-      //   .map(
-      //     (s) =>
-      //       `<li class="list-group-item list-group-item-primary fw-bold">${s} 分</li>`
-      //   )
-      //   .join("");
-       let tmp = '';
+      let tmp = '';
       ranking.forEach((s) => {
         tmp += `<li class="list-group-item list-group-item-primary fw-bold">${s} 分</li>`;
       });
-      rankList.innerHTML = tmp;     
+      rankList.html(tmp);     
     }
 
     // 更新排行榜
@@ -173,71 +165,72 @@
     loadRanking();
 
     function showStartBtn() {
-      startBtn.classList.remove("d-none");
-      shotBtn.classList.add("d-none");
+      startBtn.removeClass("d-none");
+      shotBtn.addClass("d-none");
     }
 
     function showShotBtn() {
-      startBtn.classList.add("d-none");
-      shotBtn.classList.remove("d-none");
+      startBtn.addClass("d-none");
+      shotBtn.removeClass("d-none");
     }
 
     // 投籃動畫
-    function shootAnimation() {
-      //const btnRect = shotBtn.getBoundingClientRect();
-      const btnRect = imgright.getBoundingClientRect();
+    function shootAnimation() {      
+      const btnRect = imgright.get(0).getBoundingClientRect();       
 
-      ball.style.left = btnRect.left + btnRect.width / 2 - 25 + "px";
-      ball.style.top = btnRect.top + btnRect.height / 2 - 25 + "px";
-      ball.style.display = "block";
-      ball.style.transition = "transform 0.6s ease-in-out";
+      ball.css({
+        left:btnRect.left + btnRect.width / 2 - 25 + "px",
+        top:btnRect.top + btnRect.height / 2 - 25 + "px",
+        display:"block",
+        transition:"transform 0.6s ease-in-out"
+      });
 
-      //const targetX = window.innerWidth / 2 - 25;
-      //const targetY = window.innerHeight / 3;
-       const targetX =window.innerWidth / 3 - 25;
-       const targetY =window.innerHeight / 3;
+      const targetX =window.innerWidth / 3 - 25;
+      const targetY =window.innerHeight / 3;
 
       const deltaX = targetX - (btnRect.left + btnRect.width / 2 - 25);
       const deltaY = targetY - (btnRect.top + btnRect.height / 2 - 25);
 
       requestAnimationFrame(() => {
-        ball.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.5)`;
+        ball.css("transform", `translate(${deltaX}px, ${deltaY}px) scale(0.5)`);
       });
 
       setTimeout(() => {
-        ball.style.display = "none";
-        ball.style.transition = "none";
-        ball.style.transform = "none";
+        ball.css({                
+          display:"none",
+          transition:"none",
+          transform:"none"
+        });
       }, 600);
     }
 
-    startBtn.addEventListener("click", () => {
+    startBtn.on("click", () => {
       showShotBtn();
-      shotBtn.disabled = false;
+      shotBtn.prop("disabled", false);
       score = 0;
-      scoreSpan.innerHTML = score;
-      startTime = 60;
-      timeSpan.innerHTML = startTime;
-      timeSpan.className = "text-info display-2 score-time";
+      scoreSpan.html(score);
+      startTime = 10;
+      timeSpan.html(startTime);
+      timeSpan.addClass("text-info display-2 score-time");
 
       myInterval = setInterval(() => {
         startTime--;
-        timeSpan.innerHTML = startTime;
+        timeSpan.html(startTime);
 
         if (startTime < bonusTime) {
-          timeSpan.className = "text-danger display-2 score-time";
+          timeSpan.addClass("text-danger display-2 score-time");
         } else {
-          timeSpan.className = "text-info display-2 score-time";
+          timeSpan.addClass("text-info display-2 score-time");
         }
 
         if (startTime <= 0) {
           clearInterval(myInterval);
-          shotBtn.disabled = true;          
+          shotBtn.prop("disabled",true);
           updateRanking(score);
           if (score > maxScore) {
             maxScore = score;
             localStorage.setItem("maxScore", maxScore);
-            maxScoreSpan.innerHTML = maxScore;
+            maxScoreSpan.html(maxScore);
             alert("破紀錄了！");
           }
           showStartBtn();
@@ -245,7 +238,7 @@
       }, 1000);
     });
 
-    shotBtn.addEventListener("click", () => {
+    shotBtn.on("click", () => {
       if (startTime < 1) return;
       shootAnimation();
 
@@ -254,27 +247,30 @@
       } else {
         score += 3;
       }
-      scoreSpan.innerHTML = score;
+      scoreSpan.html(score);
 
       if (score > maxScore) {
         maxScore = score;
         localStorage.setItem("maxScore", maxScore);
-        maxScoreSpan.innerHTML = maxScore;
+        maxScoreSpan.html(maxScore);
       }
     });
 
-    stopBtn.addEventListener("click", () => {
+    stopBtn.on("click", () => {
       clearInterval(myInterval);
       updateRanking(score);
       score = 0;
-      scoreSpan.innerHTML = score;
-      startTime = 60;
-      timeSpan.innerHTML = startTime;
-      timeSpan.className = "text-info display-2 score-time";
+      scoreSpan.html(score);
+      startTime = 10;
+      timeSpan.html(startTime);
+      timeSpan.addClass("text-info display-2 score-time");
 
       shotBtn.disabled = true;
+      shotBtn.prop("disabled",true);
       showStartBtn();
     });
+
+})  
   </script>
 </body>
 
